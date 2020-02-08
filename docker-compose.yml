@@ -1,0 +1,28 @@
+
+version: '3.2'
+
+services:
+  db:
+    container_name: nextdom_mysql
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: 'nextdom'
+      MYSQL_USER: 'nextdom'
+      MYSQL_PASS: 'nextdom'
+    volumes:
+      - ./mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  nextdom:
+    build: .
+    container_name: nextdom_dev
+    # image: nextdom-core:debug
+    volumes:
+      - ./nextdom:/usr/share/nextdom
+    ports:
+      - "8022:22"
+      - "8080:80"
+      - "3999:9900"
+    depends_on:
+      - db
